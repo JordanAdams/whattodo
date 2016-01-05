@@ -1,6 +1,6 @@
 {
   "name": "whattodo",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "Scrapes and lists todo, fixme, etc. comments from files.",
   "author": "Jordan Adams <hi@jordanadams.co.uk>",
   "license": "ISC",
@@ -17,7 +17,7 @@
     "test": "mocha --recursive --compilers js:babel-register -R nyan -b test/**/*.test.js",
     "lint": "eslint src test",
     "build": "babel src -d build --minified",
-    "postinstall": "npm run build"
+    "prepublish": "npm run build"
   },
   "engines": {
     "node": ">=0.10"
