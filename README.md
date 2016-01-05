@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/JordanAdams/whattodo.svg?branch=master)](https://travis-ci.org/JordanAdams/whattodo)
-
 WhatTodo
 ========
+
+[![Build Status](https://travis-ci.org/JordanAdams/whattodo.svg?branch=master)](https://travis-ci.org/JordanAdams/whattodo)
 
 Lists todo, fixme, etc. comments from files.
 
