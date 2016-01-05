@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 import fs from 'fs'
+import path from 'path'
 import program from 'commander'
 import indexAction from '../cli/index'
 
-const {version} = JSON.parse(fs.readFileSync('./package.json'));
+const pkgJsonPath = path.join(__dirname, '../../package.json')
+const {version} = JSON.parse(fs.readFileSync(pkgJsonPath))
 
 program.version(version)
 
