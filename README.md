@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/JordanAdams/whattodo.svg?branch=master)](https://travis-ci.org/JordanAdams/whattodo)
+
 WhatTodo
 ========
 
