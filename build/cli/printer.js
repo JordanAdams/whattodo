@@ -1,0 +1,8 @@
+'use strict';Object.defineProperty(exports,'__esModule',{value:true});var _forIn=require('lodash/object/forIn');var _forIn2=_interopRequireDefault(_forIn);var _sortBy=require('lodash/collection/sortBy');var _sortBy2=_interopRequireDefault(_sortBy);var _path=require('path');var _path2=_interopRequireDefault(_path);var _chalk=require('chalk');var _chalk2=_interopRequireDefault(_chalk);var _cliTable=require('cli-table');var _cliTable2=_interopRequireDefault(_cliTable);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}exports.default={ /**
+     * Prints a collection of results.
+     * @param  {Object} results Parsing results.
+     */print:function print(results){var _this=this;(0,_forIn2.default)(results,function(file,filePath){filePath=_path2.default.relative(process.cwd(),filePath);console.log(_chalk2.default.bold('\n  %s'),filePath); // sort & map file to [line, tag, value]
+var rows=(0,_sortBy2.default)(file,'line').map(function(comment){return ['    '+_chalk2.default.gray(comment.line+':'),_chalk2.default.green('@'+comment.tag.toLowerCase()),comment.value]});_this.table(rows)})}, /**
+     * Prints a table with the given rows.
+     * @param  {Array} rows Table rows.
+     */table:function table(rows){var resultsTable=new _cliTable2.default({chars:{'top':'','top-mid':'','top-left':'','top-right':'','bottom':'','bottom-mid':'','bottom-left':'','bottom-right':'','left':'','left-mid':'','mid':'','mid-mid':'','right':'','right-mid':'','middle':' '},style:{'padding-left':0,'padding-right':0}});rows.forEach(function(row){return resultsTable.push(row)});console.log(resultsTable.toString())}};
