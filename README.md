@@ -33,18 +33,18 @@ Alternatively, you can define directories/files to search
 
 ## Gotchas
 
-### Comment Formats
+#### Comment Formats
 
-#### Double Slash
+##### Double Slash
     // @todo do something
 
-#### Hash
+##### Hash
     # @todo do something
 
-#### Double Hyphen
+##### Double Hyphen
     -- @todo do something
 
-#### Slash Star Block
+##### Slash Star Block
 ```
 /**
  *  @todo do something
