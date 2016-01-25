@@ -1,69 +1,37 @@
 import fs from 'mz/fs'
-import path from 'path'
-import Q from 'q'
 import parser from './parser'
-import flattenDeep from 'lodash/array/flattenDeep'
+import normalizePath from './normalizePath'
+import glob from 'glob-promise'
+import Q from 'q'
 
-export default {
-    /**
-     * Directories to ignore.
-     * @type {Array}
-     */
-    ignore: [
-        'node_modules',
-        '.git',
-        'bower_components',
-        'vendor'
-    ],
-
-    /**
-     * Processes file at the given path.
-     *
-     * @param  {String}  filePath File path.
-     * @return {Promise}          Results.
-     */
-    file: function (filePath) {
-        return fs.readFile(filePath, 'utf8')
-            .then(contents => parser.parse(contents))
-            .then(results => results.map(result => {
-                return { path: filePath, ...result }
-            }))
-    },
-
-    /**
-     * Processes files in directory at the given path.
-     *
-     * @param  {String}        dirPath Directory path.
-     * @return {Promise|Array}         Results.
-     */
-    dir: function (dirPath) {
-        if (this.ignore.indexOf(path.basename(dirPath)) >= 0) {
-            return []
-        }
-
-        const promises = fs.readdir(dirPath)
-            .then(items => items.map(item => {
-                const itemPath = path.join(dirPath, item)
-
-                return this.path(itemPath)
-            }))
-
-        return Q.all(promises).then(flattenDeep)
-    },
-
-    /**
-     * Processes anything at the given path.
-     *
-     * @param  {String}  searchPath Path.
-     * @return {Promise}            Results.
-     */
-    path: function (searchPath) {
-        return fs.stat(searchPath)
-            .then(stat => {
-                if (stat.isFile()) return this.file(searchPath)
-                if (stat.isDirectory()) return this.dir(searchPath)
-
-                throw new Error('Unable to process path: ' + searchPath)
-            })
-    }
+/**
+ * Processes file at the given path.
+ *
+ * @param  {String}  filePath File path.
+ * @return {Promise}          Results.
+ */
+function processFile(path) {
+  return fs.readFile(path, 'utf8')
+    .then(contents => {
+      return parser.parse(contents)
+    })
+    .then(results => results.map(result => {
+      return { path, ...result }
+    }))
 }
+
+/**
+ * Processes files which match a glob.
+ *
+ * @param  {String} pattern Glob pattern.
+ * @return {Promise}         Results.
+ */
+function processGlob(pattern) {
+  return glob(pattern, { nodir: true })
+    .then(paths => {
+      return paths.map(normalizePath).map(processFile)
+    })
+    .then(Q.all)
+}
+
+export default { processGlob, processFile }
